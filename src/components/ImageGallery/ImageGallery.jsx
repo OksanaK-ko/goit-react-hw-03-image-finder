@@ -24,26 +24,22 @@ export default class ImageGallery extends Component {
             this.setState({ isLoading: true })
             fetch(this.props.imageName, this.state.page)
                 .then(data => this.setState({ images: data }))
-                .then(() => this.setState({ isLoading: false }))
                 .catch(error => this.setState({ error: error }))
-                .finally(() => 
-                    window.scrollTo({
-                        top: document.documentElement.scrollHeight,
-                        behavior: 'smooth',
-                    })
-)
+                .finally(() => this.setState({ isLoading: false }))
         }
         if (prevState.page !== this.state.page) {
             fetch(this.props.imageName, this.state.page)  
                 .then(data => this.setState(prevState => ({ images: [...prevState.images, ...data]})))
-                .then(() => this.setState({ isLoading: false }))
                 .catch(error => this.setState({ error: error }))
-                .finally(() =>
-                    window.scrollTo({
+                .finally(() => this.setState({ isLoading: false }))
+        }
+
+        if (prevState.images !== this.state.images) {
+                  window.scrollTo({
                         top: document.documentElement.scrollHeight,
                         behavior: 'smooth',
-                    })
-)
+                  })  
+            console.log(this.state.images)
         }
     }
     
